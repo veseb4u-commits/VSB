@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, Gamepad2, Code, Zap, Shield, Download, Star, Database, Lightbulb } from 'lucide-react';
 
 // IMPORTANT: Replace these with your actual Supabase credentials
-const SUPABASE_URL = 'https://orfnwdqklegpfsxnhukt.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yZm53ZHFrbGVncGZzeG5odWt0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5NjgwNjgsImV4cCI6MjA3NjU0NDA2OH0.rorRNwqRaq2JGH0XeDu4ODo0FC62cnMC9eGov8VX82w';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Simple Supabase client (lightweight - no npm package needed for demo)
 const supabase = {
