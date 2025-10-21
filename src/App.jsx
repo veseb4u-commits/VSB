@@ -129,46 +129,48 @@ export default function VesebLanding() {
     }
   };
 
-  const handleAuth = async () => {
-    setLoading(true);
-    setError('');
+ const handleAuth = async () => {
+  setLoading(true);
+  setError('');
 
-    try {
-      if (isSignUp) {
-        const result = await supabase.auth.signUp(formData.email, formData.password);
-        if (result.access_token) {
-          setAuthToken(result.access_token);
-          setCurrentUser(result.user);
-          setIsLoggedIn(true);
-          setShowLogin(false);
-        } else if (result.error) {
-          setError(result.error.message || 'Sign up failed. Please try again.');
-        } else {
-          setError('Sign up failed. Please check your email and try again.');
-        }
+  try {
+    if (isSignUp) {
+      const result = await supabase.auth.signUp(formData.email, formData.password);
+      console.log('Sign up result:', result); // Debug log
+      
+      if (result.error) {
+        setError(result.error.message || 'Sign up failed.');
+      } else if (result.user) {
+        // Sign up successful - just show message, don't auto-login
+        alert('Account created! Please sign in with your credentials.');
+        setIsSignUp(false); // Switch to sign-in mode
+        setError('');
       } else {
-        const result = await supabase.auth.signIn(formData.email, formData.password);
-        if (result.access_token) {
-          setAuthToken(result.access_token);
-          setCurrentUser(result.user);
-          setIsLoggedIn(true);
-          setShowLogin(false);
-        } else if (result.error) {
-          setError(result.error.message || 'Sign in failed. Please check your credentials.');
-        } else {
-          setError('Sign in failed. Please try again.');
-        }
+        setError('Sign up failed. Please try again.');
       }
-    } catch (err) {
-      setError('Authentication failed. Please try again.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-      setFormData({ email: '', password: '', username: '' });
+    } else {
+      const result = await supabase.auth.signIn(formData.email, formData.password);
+      console.log('Sign in result:', result); // Debug log
+      
+      if (result.access_token) {
+        setAuthToken(result.access_token);
+        setCurrentUser(result.user);
+        setIsLoggedIn(true);
+        setShowLogin(false);
+      } else if (result.error) {
+        setError(result.error.message || 'Invalid email or password.');
+      } else {
+        setError('Sign in failed. Please try again.');
+      }
     }
-  };
-
-  const handleLogout = async () => {
+  } catch (err) {
+    console.error('Auth error:', err);
+    setError('Authentication failed. Please try again.');
+  } finally {
+    setLoading(false);
+    setFormData({ email: '', password: '', username: '' });
+  }
+};  const handleLogout = async () => {
     if (authToken) {
       await supabase.auth.signOut(authToken);
     }
