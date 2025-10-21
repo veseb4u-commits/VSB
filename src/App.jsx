@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, Gamepad2, Code, Zap, Shield, Download, Star, Database, Lightbulb } from 'lucide-react';
 
-// IMPORTANT: Replace these with your actual Supabase credentials
+// IMPORTANT: These will use environment variables from Vercel
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
@@ -9,35 +9,35 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = {
   auth: {
     async signUp(email, password) {
-  const response = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      const response = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify({ 
+          email, 
+          password,
+          options: {
+            emailRedirectTo: window.location.origin
+          }
+        })
+      });
+      return await response.json();
     },
-    body: JSON.stringify({ 
-      email, 
-      password,
-      options: {
-        emailRedirectTo: window.location.origin
-      }
-    })
-  });
-  return await response.json();
-}
     async signIn(email, password) {
-  const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify({ email, password })
+      });
+      return await response.json();
     },
-    body: JSON.stringify({ email, password })
-  });
-  return await response.json();
-}
     async signOut(token) {
       await fetch(`${SUPABASE_URL}/auth/v1/logout`, {
         method: 'POST',
@@ -142,7 +142,9 @@ export default function VesebLanding() {
           setIsLoggedIn(true);
           setShowLogin(false);
         } else if (result.error) {
-          setError(result.error.message);
+          setError(result.error.message || 'Sign up failed. Please try again.');
+        } else {
+          setError('Sign up failed. Please check your email and try again.');
         }
       } else {
         const result = await supabase.auth.signIn(formData.email, formData.password);
@@ -152,7 +154,9 @@ export default function VesebLanding() {
           setIsLoggedIn(true);
           setShowLogin(false);
         } else if (result.error) {
-          setError(result.error.message);
+          setError(result.error.message || 'Sign in failed. Please check your credentials.');
+        } else {
+          setError('Sign in failed. Please try again.');
         }
       }
     } catch (err) {
@@ -328,6 +332,7 @@ export default function VesebLanding() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white relative overflow-hidden">
+      {/* Background decorative elements */}
       <div className="absolute top-10 left-10 w-20 h-20 bg-purple-700/10 rounded-lg border border-purple-400/20 flex items-center justify-center opacity-50">
         <Code size={40} className="text-purple-300" />
       </div>
