@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +28,48 @@
             max-width: 1000px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            background: white;
+            border-radius: 25px;
+            padding: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-weight: bold;
+            font-size: 0.95em;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .lang-btn .flag {
+            font-size: 1.2em;
         }
 
         h1 {
@@ -630,6 +671,139 @@
             font-size: 1.5em;
         }
 
+        /* Welcome Screen Styles */
+        .welcome-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .welcome-content h2 {
+            text-align: center;
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 30px;
+        }
+
+        .overview-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .overview-section h3 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .overview-section p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .game-description {
+            margin-top: 15px;
+        }
+
+        .game-description strong {
+            color: #667eea;
+            font-size: 1.2em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .features-list, .instructions-list, .tips-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+        }
+
+        .features-list li, .tips-list li {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 10px;
+            color: #555;
+            line-height: 1.6;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .features-list li strong, .tips-list li::before {
+            color: #667eea;
+        }
+
+        .tips-list li::before {
+            content: "💡 ";
+            margin-right: 8px;
+        }
+
+        .instructions-list {
+            counter-reset: instruction-counter;
+        }
+
+        .instructions-list li {
+            counter-increment: instruction-counter;
+            padding: 15px 15px 15px 50px;
+            margin-bottom: 12px;
+            background: white;
+            border-radius: 10px;
+            color: #555;
+            line-height: 1.6;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .instructions-list li::before {
+            content: counter(instruction-counter);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-left-color: #764ba2;
+        }
+
+        .start-btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 30px auto 0;
+            padding: 20px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+        }
+
         @media (max-width: 768px) {
             .game-content {
                 flex-direction: column;
@@ -655,13 +829,102 @@
             .photo-upload-grid {
                 grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             }
+
+            .welcome-content h2 {
+                font-size: 1.8em;
+            }
+
+            .overview-section {
+                padding: 20px;
+            }
+
+            .overview-section h3 {
+                font-size: 1.3em;
+            }
+
+            .start-btn {
+                font-size: 1.1em;
+                padding: 18px 30px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Language Toggle -->
+        <div class="language-toggle">
+            <button class="lang-btn active" onclick="setLanguage('en')" id="langEnBtn">
+                <span class="flag">🇬🇧</span> EN
+            </button>
+            <button class="lang-btn" onclick="setLanguage('fr')" id="langFrBtn">
+                <span class="flag">🇫🇷</span> FR
+            </button>
+        </div>
+
+        <!-- Welcome/Overview Screen -->
+        <div id="welcomeScreen" class="screen active">
+            <div class="welcome-content">
+                <h2>Welcome to Brain Training Games!</h2>
+                
+                <div class="overview-section">
+                    <h3>📖 About This App</h3>
+                    <p>Brain Training Games is designed to help you exercise your mind through fun and engaging puzzles. Keep your brain sharp while having fun!</p>
+                </div>
+
+                <div class="overview-section">
+                    <h3>🎮 Available Games</h3>
+                    <div class="game-description">
+                        <strong>🎴 Memory Matching</strong>
+                        <p>Test your memory by finding matching pairs of cards. Flip two cards at a time and remember their positions to match all pairs in the fewest moves possible!</p>
+                    </div>
+                    <div class="game-description">
+                        <strong>📝 Word Search Puzzle</strong>
+                        <p>Find hidden words in a grid of letters. Words can be placed horizontally, vertically, or diagonally. Choose from themed word lists or create your own custom puzzles with photos!</p>
+                    </div>
+                </div>
+
+                <div class="overview-section">
+                    <h3>✨ Key Features</h3>
+                    <ul class="features-list">
+                        <li><strong>Multiple Game Modes:</strong> Play with emojis, themed words, or upload your own photos</li>
+                        <li><strong>Customizable Difficulty:</strong> Choose between easy and hard modes to match your skill level</li>
+                        <li><strong>Photo Mode:</strong> Upload personal images with custom labels for a personalized experience</li>
+                        <li><strong>Save & Load:</strong> Save your custom photo sets and load them anytime you want to play</li>
+                        <li><strong>Multiple Themes:</strong> Word search includes Animals, Fruits, Family, and Nature themes</li>
+                        <li><strong>Touch & Mouse Support:</strong> Play seamlessly on any device - desktop, tablet, or phone</li>
+                    </ul>
+                </div>
+
+                <div class="overview-section">
+                    <h3>🎯 How to Play</h3>
+                    <ol class="instructions-list">
+                        <li>Click "Let's Start Playing!" to access the main game menu</li>
+                        <li>Select a game from the available options (Memory Matching or Word Search)</li>
+                        <li>Choose your preferred mode (emojis/photos or themes) and difficulty level</li>
+                        <li>For Photo Mode: Upload images and add labels - you can save these sets for future games</li>
+                        <li>Click "Start Game" and enjoy! Track your progress as you play</li>
+                        <li>Complete the puzzle to see your congratulations message and final score</li>
+                    </ol>
+                </div>
+
+                <div class="overview-section tips-section">
+                    <h3>💡 Pro Tips</h3>
+                    <ul class="tips-list">
+                        <li>In Memory Matching, try to remember card positions even when they don't match</li>
+                        <li>In Word Search, words can appear forwards or backwards - scan carefully!</li>
+                        <li>Look for unusual letter combinations to spot hidden words more easily</li>
+                        <li>Photo Mode works great for learning - use family photos, vocabulary words, or study material</li>
+                        <li>Save your favorite photo sets to play again without re-uploading</li>
+                        <li>Start with Easy mode to learn the game, then challenge yourself with Hard mode</li>
+                    </ul>
+                </div>
+
+                <button class="start-btn" onclick="showMenu()">Let's Start Playing! 🚀</button>
+            </div>
+        </div>
+
         <!-- Home Screen -->
-        <div id="homeScreen" class="screen active">
+        <div id="homeScreen" class="screen">
             <h1>🧠 Brain Training Games</h1>
             <p class="subtitle">Choose a game to exercise your mind</p>
             
@@ -883,6 +1146,214 @@
     </div>
 
     <script>
+        // ===== LANGUAGE SYSTEM =====
+        let currentLanguage = 'en';
+
+        const translations = {
+            en: {
+                // Welcome Screen
+                welcomeTitle: "Welcome to Brain Training Games!",
+                aboutTitle: "📖 About This App",
+                aboutText: "Brain Training Games is designed to help you exercise your mind through fun and engaging puzzles. Keep your brain sharp while having fun!",
+                gamesTitle: "🎮 Available Games",
+                memoryGameTitle: "🎴 Memory Matching",
+                memoryGameDesc: "Test your memory by finding matching pairs of cards. Flip two cards at a time and remember their positions to match all pairs in the fewest moves possible!",
+                wordSearchTitle: "📝 Word Search Puzzle",
+                wordSearchDesc: "Find hidden words in a grid of letters. Words can be placed horizontally, vertically, or diagonally. Choose from themed word lists or create your own custom puzzles with photos!",
+                featuresTitle: "✨ Key Features",
+                feature1: "<strong>Multiple Game Modes:</strong> Play with emojis, themed words, or upload your own photos",
+                feature2: "<strong>Customizable Difficulty:</strong> Choose between easy and hard modes to match your skill level",
+                feature3: "<strong>Photo Mode:</strong> Upload personal images with custom labels for a personalized experience",
+                feature4: "<strong>Save & Load:</strong> Save your custom photo sets and load them anytime you want to play",
+                feature5: "<strong>Multiple Themes:</strong> Word search includes Animals, Fruits, Family, and Nature themes",
+                feature6: "<strong>Touch & Mouse Support:</strong> Play seamlessly on any device - desktop, tablet, or phone",
+                howToPlayTitle: "🎯 How to Play",
+                howToStep1: "Click \"Let's Start Playing!\" to access the main game menu",
+                howToStep2: "Select a game from the available options (Memory Matching or Word Search)",
+                howToStep3: "Choose your preferred mode (emojis/photos or themes) and difficulty level",
+                howToStep4: "For Photo Mode: Upload images and add labels - you can save these sets for future games",
+                howToStep5: "Click \"Start Game\" and enjoy! Track your progress as you play",
+                howToStep6: "Complete the puzzle to see your congratulations message and final score",
+                tipsTitle: "💡 Pro Tips",
+                tip1: "In Memory Matching, try to remember card positions even when they don't match",
+                tip2: "In Word Search, words can appear forwards or backwards - scan carefully!",
+                tip3: "Look for unusual letter combinations to spot hidden words more easily",
+                tip4: "Photo Mode works great for learning - use family photos, vocabulary words, or study material",
+                tip5: "Save your favorite photo sets to play again without re-uploading",
+                tip6: "Start with Easy mode to learn the game, then challenge yourself with Hard mode",
+                startButton: "Let's Start Playing! 🚀",
+                
+                // Home Screen
+                homeTitle: "🧠 Brain Training Games",
+                homeSubtitle: "Choose a game to exercise your mind",
+                memoryCard: "Memory Matching",
+                wordSearchCard: "Word Search",
+                patternCard: "Pattern Recognition",
+                solitaireCard: "Solitaire",
+                comingSoon: "(Coming Soon)",
+                
+                // Memory Setup
+                memorySetupTitle: "🎴 Memory Matching Setup",
+                memorySetupSubtitle: "Choose your game mode",
+                emojiMode: "😊 Play with Emojis",
+                photoMode: "📷 Play with Photos",
+                difficultyLabel: "Choose Difficulty Level",
+                easyMemory: "Easy (4 pairs)",
+                mediumMemory: "Medium (6 pairs)",
+                uploadInstructionsMemory: "📸 Upload photos of family members, pets, or favorite things!",
+                minPhotosText: "You need at least",
+                photosToStart: "photos to start playing",
+                photosUploaded: "Photos uploaded:",
+                savePhotoSet: "💾 Save Photo Set",
+                loadPhotoSet: "📂 Load Photo Set",
+                startGame: "Start Game",
+                backToGames: "← Back to Games",
+                
+                // Memory Game
+                memoryGameTitle: "🎴 Memory Matching",
+                memoryGameSubtitle: "Find all the matching pairs!",
+                soundOn: "🔊 Sound: ON",
+                soundOff: "🔇 Sound: OFF",
+                congratulations: "🎉 Congratulations!",
+                foundAllPairs: "You found all pairs in",
+                movesText: "moves!",
+                movesLabel: "Moves",
+                pairsLabel: "Pairs Found",
+                newGame: "New Game",
+                changeSettings: "Change Settings",
+                backToSetup: "← Back to Setup",
+                
+                // Word Search Setup
+                wordSetupTitle: "📝 Word Search Setup",
+                wordSetupSubtitle: "Customize your game",
+                themeMode: "🎨 Play with Themes",
+                photoWordMode: "📷 Play with Photos",
+                easyWord: "Easy (6x6 grid, 4 words)",
+                mediumWord: "Medium (8x8 grid, 6 words)",
+                chooseTheme: "Choose Theme",
+                themeAnimals: "🐾 Animals",
+                themeFruits: "🍎 Fruits",
+                themeFamily: "👨‍👩‍👧‍👦 Family",
+                themeNature: "🌳 Nature",
+                uploadInstructionsWord: "📸 Upload photos of family, friends, or pets and add their names!",
+                namesHidden: "Names will be hidden in the word search puzzle",
+                
+                // Word Search Game
+                wordGameTitle: "📝 Word Search",
+                wordGameSubtitle: "Find all the hidden words!",
+                wordsFoundLabel: "Words Found:",
+                wordCongrats: "🎉 Congratulations!",
+                foundAllWords: "You found all",
+                wordsText: "words!",
+                
+                // Common
+                clickToUpload: "Click to Upload",
+                addPhoto: "Add Photo",
+                removePhoto: "Remove"
+            },
+            fr: {
+                // Welcome Screen
+                welcomeTitle: "Bienvenue aux Jeux d'Entraînement Cérébral!",
+                aboutTitle: "📖 À Propos de Cette Application",
+                aboutText: "Les Jeux d'Entraînement Cérébral sont conçus pour vous aider à exercer votre esprit à travers des énigmes amusantes et engageantes. Gardez votre cerveau vif tout en vous amusant!",
+                gamesTitle: "🎮 Jeux Disponibles",
+                memoryGameTitle: "🎴 Jeu de Mémoire",
+                memoryGameDesc: "Testez votre mémoire en trouvant des paires de cartes correspondantes. Retournez deux cartes à la fois et mémorisez leurs positions pour associer toutes les paires en un minimum de mouvements!",
+                wordSearchTitle: "📝 Mots Cachés",
+                wordSearchDesc: "Trouvez des mots cachés dans une grille de lettres. Les mots peuvent être placés horizontalement, verticalement ou en diagonale. Choisissez parmi des listes de mots thématiques ou créez vos propres puzzles personnalisés avec des photos!",
+                featuresTitle: "✨ Fonctionnalités Clés",
+                feature1: "<strong>Modes de Jeu Multiples:</strong> Jouez avec des émojis, des mots thématiques ou téléchargez vos propres photos",
+                feature2: "<strong>Difficulté Personnalisable:</strong> Choisissez entre les modes facile et difficile selon votre niveau",
+                feature3: "<strong>Mode Photo:</strong> Téléchargez des images personnelles avec des étiquettes personnalisées pour une expérience unique",
+                feature4: "<strong>Sauvegarder et Charger:</strong> Sauvegardez vos ensembles de photos personnalisés et chargez-les à tout moment",
+                feature5: "<strong>Thèmes Multiples:</strong> Les mots cachés incluent des thèmes Animaux, Fruits, Famille et Nature",
+                feature6: "<strong>Support Tactile et Souris:</strong> Jouez sans problème sur n'importe quel appareil - ordinateur, tablette ou téléphone",
+                howToPlayTitle: "🎯 Comment Jouer",
+                howToStep1: "Cliquez sur \"Commençons à Jouer!\" pour accéder au menu principal",
+                howToStep2: "Sélectionnez un jeu parmi les options disponibles (Jeu de Mémoire ou Mots Cachés)",
+                howToStep3: "Choisissez votre mode préféré (émojis/photos ou thèmes) et le niveau de difficulté",
+                howToStep4: "Pour le Mode Photo: Téléchargez des images et ajoutez des étiquettes - vous pouvez sauvegarder ces ensembles pour de futurs jeux",
+                howToStep5: "Cliquez sur \"Démarrer le Jeu\" et amusez-vous! Suivez votre progression pendant que vous jouez",
+                howToStep6: "Terminez le puzzle pour voir votre message de félicitations et votre score final",
+                tipsTitle: "💡 Conseils Pro",
+                tip1: "Dans le Jeu de Mémoire, essayez de mémoriser les positions des cartes même lorsqu'elles ne correspondent pas",
+                tip2: "Dans les Mots Cachés, les mots peuvent apparaître à l'endroit ou à l'envers - examinez attentivement!",
+                tip3: "Recherchez des combinaisons de lettres inhabituelles pour repérer plus facilement les mots cachés",
+                tip4: "Le Mode Photo est idéal pour l'apprentissage - utilisez des photos de famille, du vocabulaire ou du matériel d'étude",
+                tip5: "Sauvegardez vos ensembles de photos préférés pour rejouer sans avoir à les télécharger à nouveau",
+                tip6: "Commencez par le mode Facile pour apprendre le jeu, puis défiez-vous avec le mode Difficile",
+                startButton: "Commençons à Jouer! 🚀",
+                
+                // Home Screen
+                homeTitle: "🧠 Jeux d'Entraînement Cérébral",
+                homeSubtitle: "Choisissez un jeu pour exercer votre esprit",
+                memoryCard: "Jeu de Mémoire",
+                wordSearchCard: "Mots Cachés",
+                patternCard: "Reconnaissance de Motifs",
+                solitaireCard: "Solitaire",
+                comingSoon: "(Bientôt Disponible)",
+                
+                // Memory Setup
+                memorySetupTitle: "🎴 Configuration du Jeu de Mémoire",
+                memorySetupSubtitle: "Choisissez votre mode de jeu",
+                emojiMode: "😊 Jouer avec des Émojis",
+                photoMode: "📷 Jouer avec des Photos",
+                difficultyLabel: "Choisissez le Niveau de Difficulté",
+                easyMemory: "Facile (4 paires)",
+                mediumMemory: "Moyen (6 paires)",
+                uploadInstructionsMemory: "📸 Téléchargez des photos de membres de la famille, d'animaux ou de choses préférées!",
+                minPhotosText: "Vous avez besoin d'au moins",
+                photosToStart: "photos pour commencer à jouer",
+                photosUploaded: "Photos téléchargées:",
+                savePhotoSet: "💾 Sauvegarder l'Ensemble",
+                loadPhotoSet: "📂 Charger l'Ensemble",
+                startGame: "Démarrer le Jeu",
+                backToGames: "← Retour aux Jeux",
+                
+                // Memory Game
+                memoryGameTitle: "🎴 Jeu de Mémoire",
+                memoryGameSubtitle: "Trouvez toutes les paires correspondantes!",
+                soundOn: "🔊 Son: ACTIVÉ",
+                soundOff: "🔇 Son: DÉSACTIVÉ",
+                congratulations: "🎉 Félicitations!",
+                foundAllPairs: "Vous avez trouvé toutes les paires en",
+                movesText: "coups!",
+                movesLabel: "Coups",
+                pairsLabel: "Paires Trouvées",
+                newGame: "Nouveau Jeu",
+                changeSettings: "Changer les Paramètres",
+                backToSetup: "← Retour à la Configuration",
+                
+                // Word Search Setup
+                wordSetupTitle: "📝 Configuration des Mots Cachés",
+                wordSetupSubtitle: "Personnalisez votre jeu",
+                themeMode: "🎨 Jouer avec des Thèmes",
+                photoWordMode: "📷 Jouer avec des Photos",
+                easyWord: "Facile (grille 6x6, 4 mots)",
+                mediumWord: "Moyen (grille 8x8, 6 mots)",
+                chooseTheme: "Choisissez un Thème",
+                themeAnimals: "🐾 Animaux",
+                themeFruits: "🍎 Fruits",
+                themeFamily: "👨‍👩‍👧‍👦 Famille",
+                themeNature: "🌳 Nature",
+                uploadInstructionsWord: "📸 Téléchargez des photos de famille, d'amis ou d'animaux et ajoutez leurs noms!",
+                namesHidden: "Les noms seront cachés dans le puzzle de mots",
+                
+                // Word Search Game
+                wordGameTitle: "📝 Mots Cachés",
+                wordGameSubtitle: "Trouvez tous les mots cachés!",
+                wordsFoundLabel: "Mots Trouvés:",
+                wordCongrats: "🎉 Félicitations!",
+                foundAllWords: "Vous avez trouvé tous les",
+                wordsText: "mots!",
+                
+                // Common
+                clickToUpload: "Cliquer pour Télécharger",
+                addPhoto: "Ajouter une Photo",
+                removePhoto: "Supprimer"
+            }
+        };
+
         // ===== MEMORY GAME =====
         let memoryMode = 'emoji';
         let memoryDifficulty = 'easy';
@@ -958,10 +1429,211 @@
 
         function toggleSound() {
             soundEnabled = !soundEnabled;
-            document.getElementById('soundToggle').textContent = soundEnabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
+            const t = translations[currentLanguage];
+            document.getElementById('soundToggle').textContent = soundEnabled ? t.soundOn : t.soundOff;
         }
 
         // ===== NAVIGATION =====
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('brainGamesLanguage', lang);
+            
+            // Update button states
+            document.getElementById('langEnBtn').classList.toggle('active', lang === 'en');
+            document.getElementById('langFrBtn').classList.toggle('active', lang === 'fr');
+            
+            // Update all translatable content
+            updateTranslations();
+        }
+
+        function updateTranslations() {
+            const t = translations[currentLanguage];
+            
+            // Update welcome screen
+            document.querySelector('#welcomeScreen h2').textContent = t.welcomeTitle;
+            const overviewSections = document.querySelectorAll('#welcomeScreen .overview-section');
+            
+            if (overviewSections[0]) {
+                overviewSections[0].querySelector('h3').innerHTML = t.aboutTitle;
+                overviewSections[0].querySelector('p').textContent = t.aboutText;
+            }
+            
+            if (overviewSections[1]) {
+                overviewSections[1].querySelector('h3').innerHTML = t.gamesTitle;
+                const gameDescriptions = overviewSections[1].querySelectorAll('.game-description');
+                if (gameDescriptions[0]) {
+                    gameDescriptions[0].querySelector('strong').textContent = t.memoryGameTitle;
+                    gameDescriptions[0].querySelector('p').textContent = t.memoryGameDesc;
+                }
+                if (gameDescriptions[1]) {
+                    gameDescriptions[1].querySelector('strong').textContent = t.wordSearchTitle;
+                    gameDescriptions[1].querySelector('p').textContent = t.wordSearchDesc;
+                }
+            }
+            
+            if (overviewSections[2]) {
+                overviewSections[2].querySelector('h3').innerHTML = t.featuresTitle;
+                const features = overviewSections[2].querySelectorAll('.features-list li');
+                features[0].innerHTML = t.feature1;
+                features[1].innerHTML = t.feature2;
+                features[2].innerHTML = t.feature3;
+                features[3].innerHTML = t.feature4;
+                features[4].innerHTML = t.feature5;
+                features[5].innerHTML = t.feature6;
+            }
+            
+            if (overviewSections[3]) {
+                overviewSections[3].querySelector('h3').innerHTML = t.howToPlayTitle;
+                const steps = overviewSections[3].querySelectorAll('.instructions-list li');
+                steps[0].textContent = t.howToStep1;
+                steps[1].textContent = t.howToStep2;
+                steps[2].textContent = t.howToStep3;
+                steps[3].textContent = t.howToStep4;
+                steps[4].textContent = t.howToStep5;
+                steps[5].textContent = t.howToStep6;
+            }
+            
+            if (overviewSections[4]) {
+                overviewSections[4].querySelector('h3').innerHTML = t.tipsTitle;
+                const tips = overviewSections[4].querySelectorAll('.tips-list li');
+                tips[0].textContent = t.tip1;
+                tips[1].textContent = t.tip2;
+                tips[2].textContent = t.tip3;
+                tips[3].textContent = t.tip4;
+                tips[4].textContent = t.tip5;
+                tips[5].textContent = t.tip6;
+            }
+            
+            document.querySelector('#welcomeScreen .start-btn').textContent = t.startButton;
+            
+            // Update home screen
+            const homeH1 = document.querySelector('#homeScreen h1');
+            const homeSubtitle = document.querySelector('#homeScreen .subtitle');
+            if (homeH1) homeH1.textContent = t.homeTitle;
+            if (homeSubtitle) homeSubtitle.textContent = t.homeSubtitle;
+            
+            const gameCards = document.querySelectorAll('#homeScreen .game-card');
+            if (gameCards[0]) gameCards[0].innerHTML = '🎴<br>' + t.memoryCard;
+            if (gameCards[1]) gameCards[1].innerHTML = '📝<br>' + t.wordSearchCard;
+            if (gameCards[2]) gameCards[2].innerHTML = '🔢<br>' + t.patternCard + '<br><small>' + t.comingSoon + '</small>';
+            if (gameCards[3]) gameCards[3].innerHTML = '🃏<br>' + t.solitaireCard + '<br><small>' + t.comingSoon + '</small>';
+            
+            // Update memory setup
+            const memSetupH1 = document.querySelector('#memorySetupScreen h1');
+            const memSetupSub = document.querySelector('#memorySetupScreen .subtitle');
+            if (memSetupH1) memSetupH1.textContent = t.memorySetupTitle;
+            if (memSetupSub) memSetupSub.textContent = t.memorySetupSubtitle;
+            
+            const emojiBtn = document.getElementById('emojiModeBtn');
+            const photoModeBtn = document.getElementById('photoModeBtn');
+            if (emojiBtn) emojiBtn.textContent = t.emojiMode;
+            if (photoModeBtn) photoModeBtn.textContent = t.photoMode;
+            
+            const memDiffLabel = document.querySelector('#memorySetupScreen .difficulty-label');
+            if (memDiffLabel) memDiffLabel.textContent = t.difficultyLabel;
+            
+            const memEasyBtn = document.getElementById('memEasyBtn');
+            const memMedBtn = document.getElementById('memMediumBtn');
+            if (memEasyBtn) memEasyBtn.textContent = t.easyMemory;
+            if (memMedBtn) memMedBtn.textContent = t.mediumMemory;
+            
+            const memBackBtn = document.querySelector('#memorySetupScreen .back-btn');
+            if (memBackBtn) memBackBtn.textContent = t.backToGames;
+            
+            const memStartBtn = document.getElementById('startMemoryBtn');
+            if (memStartBtn) memStartBtn.textContent = t.startGame;
+            
+            // Update memory game screen
+            const memGameH1 = document.querySelector('#memoryScreen h1');
+            const memGameSub = document.querySelector('#memoryScreen .subtitle');
+            if (memGameH1) memGameH1.textContent = t.memoryGameTitle;
+            if (memGameSub) memGameSub.textContent = t.memoryGameSubtitle;
+            
+            const memBackSetup = document.querySelector('#memoryScreen .back-btn');
+            if (memBackSetup) memBackSetup.textContent = t.backToSetup;
+            
+            const soundToggle = document.getElementById('soundToggle');
+            if (soundToggle) {
+                soundToggle.textContent = soundEnabled ? t.soundOn : t.soundOff;
+            }
+            
+            const memCongratsH2 = document.querySelector('#memCongrats h2');
+            if (memCongratsH2) memCongratsH2.textContent = t.congratulations;
+            
+            const movesLabel = document.querySelector('#memoryScreen .info-label');
+            if (movesLabel) movesLabel.textContent = t.movesLabel;
+            
+            const pairsLabel = document.querySelectorAll('#memoryScreen .info-label')[1];
+            if (pairsLabel) pairsLabel.textContent = t.pairsLabel;
+            
+            const memBtns = document.querySelectorAll('#memoryScreen .controls .btn');
+            if (memBtns[0]) memBtns[0].textContent = t.newGame;
+            if (memBtns[1]) memBtns[1].textContent = t.changeSettings;
+            
+            // Update word search setup
+            const wordSetupH1 = document.querySelector('#wordSearchSetupScreen h1');
+            const wordSetupSub = document.querySelector('#wordSearchSetupScreen .subtitle');
+            if (wordSetupH1) wordSetupH1.textContent = t.wordSetupTitle;
+            if (wordSetupSub) wordSetupSub.textContent = t.wordSetupSubtitle;
+            
+            const themeModeBtn = document.getElementById('themeModeBtn');
+            const photoWordBtn = document.getElementById('photoWordModeBtn');
+            if (themeModeBtn) themeModeBtn.textContent = t.themeMode;
+            if (photoWordBtn) photoWordBtn.textContent = t.photoWordMode;
+            
+            const wordDiffLabel = document.querySelector('#wordSearchSetupScreen .difficulty-label');
+            if (wordDiffLabel) wordDiffLabel.textContent = t.difficultyLabel;
+            
+            const wordEasyBtn = document.getElementById('wordEasyBtn');
+            const wordMedBtn = document.getElementById('wordMediumBtn');
+            if (wordEasyBtn) wordEasyBtn.textContent = t.easyWord;
+            if (wordMedBtn) wordMedBtn.textContent = t.mediumWord;
+            
+            const themeLabel = document.querySelector('#themeSection .difficulty-label');
+            if (themeLabel) themeLabel.textContent = t.chooseTheme;
+            
+            const themeAnimals = document.getElementById('themeAnimals');
+            const themeFruits = document.getElementById('themeFruits');
+            const themeFamily = document.getElementById('themeFamily');
+            const themeNature = document.getElementById('themeNature');
+            if (themeAnimals) themeAnimals.textContent = t.themeAnimals;
+            if (themeFruits) themeFruits.textContent = t.themeFruits;
+            if (themeFamily) themeFamily.textContent = t.themeFamily;
+            if (themeNature) themeNature.textContent = t.themeNature;
+            
+            const wordBackBtn = document.querySelector('#wordSearchSetupScreen .back-btn');
+            if (wordBackBtn) wordBackBtn.textContent = t.backToGames;
+            
+            const wordStartBtn = document.getElementById('startWordBtn');
+            if (wordStartBtn) wordStartBtn.textContent = t.startGame;
+            
+            // Update word search game
+            const wordGameH1 = document.querySelector('#wordSearchScreen h1');
+            const wordGameSub = document.querySelector('#wordSearchScreen .subtitle');
+            if (wordGameH1) wordGameH1.textContent = t.wordGameTitle;
+            if (wordGameSub) wordGameSub.textContent = t.wordGameSubtitle;
+            
+            const wordBackSetup = document.querySelector('#wordSearchScreen .back-btn');
+            if (wordBackSetup) wordBackSetup.textContent = t.backToSetup;
+            
+            const wordCongratsH2 = document.querySelector('#wordCongrats h2');
+            if (wordCongratsH2) wordCongratsH2.textContent = t.wordCongrats;
+            
+            // Update document title
+            document.title = t.homeTitle.replace('🧠 ', '');
+        }
+
+        // Load saved language preference
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('brainGamesLanguage') || 'en';
+            setLanguage(savedLang);
+        });
+
+        function showMenu() {
+            document.getElementById('welcomeScreen').classList.remove('active');
+            document.getElementById('homeScreen').classList.add('active');
+        }
+
         function showGame(game) {
             document.getElementById('homeScreen').classList.remove('active');
             if (game === 'memory') {
