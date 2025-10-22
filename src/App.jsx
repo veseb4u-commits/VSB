@@ -118,16 +118,25 @@ export default function VesebLanding() {
     loadApps();
   }, []);
 
-  const loadApps = async () => {
-    try {
-      const { data } = await supabase.from('apps').select('*').exec();
-      if (data) {
-        setApps(data);
+ const loadApps = async () => {
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/apps?select=*&order=display_order.asc`,
+      {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
       }
-    } catch (err) {
-      console.error('Error loading apps:', err);
+    );
+    const data = await response.json();
+    if (data) {
+      setApps(data);
     }
-  };
+  } catch (err) {
+    console.error('Error loading apps:', err);
+  }
+};
 
  const handleAuth = async () => {
   setLoading(true);
