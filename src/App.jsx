@@ -135,20 +135,26 @@ export default function VesebLanding() {
 
   try {
     if (isSignUp) {
-      const result = await supabase.auth.signUp(formData.email, formData.password);
-      console.log('Sign up result:', result); // Debug log
-      
-      if (result.error) {
-        setError(result.error.message || 'Sign up failed.');
-      } else if (result.user) {
-        // Sign up successful - just show message, don't auto-login
-        alert('Account created! Please sign in with your credentials.');
-        setIsSignUp(false); // Switch to sign-in mode
-        setError('');
-      } else {
-        setError('Sign up failed. Please try again.');
-      }
-    } else {
+  const result = await supabase.auth.signUp(formData.email, formData.password);
+  console.log('Sign up result:', result); // Keep this for debugging
+  
+  // Check for user creation even if there's a warning/error
+  if (result.user || result.id) {
+    // Success! User was created
+    alert(`Account created successfully! Please sign in with your credentials.`);
+    setIsSignUp(false); // Switch to sign-in mode
+    setShowLogin(true); // Keep modal open for sign in
+    setError(''); // Clear any errors
+  } else if (result.error) {
+    setError(result.error.message || 'Sign up failed.');
+  } else if (result.code === 500) {
+    // User might have been created despite the error
+    alert('Account may have been created. Please try signing in.');
+    setIsSignUp(false);
+  } else {
+    setError('Sign up failed. Please try again.');
+  }
+} else {
       const result = await supabase.auth.signIn(formData.email, formData.password);
       console.log('Sign in result:', result); // Debug log
       
