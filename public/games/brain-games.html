@@ -44,6 +44,33 @@
             z-index: 1000;
         }
 
+        .help-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-weight: bold;
+            font-size: 0.95em;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-right: 2px solid #e0e0e0;
+            padding-right: 15px;
+            margin-right: 5px;
+        }
+
+        .help-btn:hover {
+            background: #f0f0f0;
+            color: #667eea;
+        }
+
+        .help-btn .icon {
+            font-size: 1.2em;
+        }
+
         .lang-btn {
             padding: 8px 16px;
             border: none;
@@ -859,6 +886,9 @@
     <div class="container">
         <!-- Language Toggle -->
         <div class="language-toggle">
+            <button class="help-btn" onclick="showWelcome()" title="About / Help">
+                <span class="icon">ℹ️</span>
+            </button>
             <button class="lang-btn active" onclick="setLanguage('en')" id="langEnBtn">
                 <span class="flag">🇬🇧</span> EN
             </button>
@@ -1255,7 +1285,8 @@
                 // Common
                 clickToUpload: "Click to Upload",
                 addPhoto: "Add Photo",
-                removePhoto: "Remove"
+                removePhoto: "Remove",
+                helpTooltip: "About / Help"
             },
             fr: {
                 // Welcome Screen
@@ -1356,7 +1387,8 @@
                 // Common
                 clickToUpload: "Cliquer pour Télécharger",
                 addPhoto: "Ajouter une Photo",
-                removePhoto: "Supprimer"
+                removePhoto: "Supprimer",
+                helpTooltip: "À Propos / Aide"
             }
         };
 
@@ -1625,6 +1657,10 @@
             const wordCongratsH2 = document.querySelector('#wordCongrats h2');
             if (wordCongratsH2) wordCongratsH2.textContent = t.wordCongrats;
             
+            // Update help button tooltip
+            const helpBtn = document.querySelector('.help-btn');
+            if (helpBtn) helpBtn.setAttribute('title', t.helpTooltip);
+            
             // Update document title
             document.title = t.homeTitle.replace('🧠 ', '');
         }
@@ -1638,6 +1674,11 @@
         function showMenu() {
             document.getElementById('welcomeScreen').classList.remove('active');
             document.getElementById('homeScreen').classList.add('active');
+        }
+
+        function showWelcome() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('welcomeScreen').classList.add('active');
         }
 
         function showGame(game) {
